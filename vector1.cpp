@@ -1,25 +1,54 @@
-//Éè¼ÆÒ»¸ö Vector Àà£¬ÒªÇó£º
-//ÊµÏÖÓÑÔªº¯Êý dotProduct ¼ÆËãÁ½¸öÏòÁ¿µÄµã»ý£¨¹«Ê½£ºv1.xv2.x + v1.yv2.y£©
 #include<iostream>
+#include<vector>
 #include<string>
 using namespace std;
-class Vector{
-	private:
-		int x;
-		int y;
-	public:
-	friend  int doProduct(  Vector&v1, Vector&v2);
-	Vector(int x1,int y1){
-		x=x1;
-		y=y1;
-	}
+class Person{
+    public:
+    string name;
+    int age;
+    Person(string m_name,int m_age){
+        this->name=m_name;
+        this->age=m_age;
+    }
 };
- int doProduct( Vector&v1, Vector&v2){
- 	 return v1.x*v2.x+v1.y*v2.y;
- 	  }
+void test(){
+    vector<Person> v;
+    Person p1("zhangsan",10);
+    Person p2("lisi",20);
+    Person p3("wangwu",30);
+    Person p4("xiaoming",40);
+    Person p5("xiaobai",50);
+    v.push_back(p1);
+    v.push_back(p2);
+    v.push_back(p3);
+    v.push_back(p4);
+    v.push_back(p5);
+    for(vector<Person>::iterator it=v.begin();it!=v.end();it++){
+       // cout<<"name:"<<(*it).name<<endl;
+       //cout<<"age:"<<(*it).age<<endl;
+       cout<<"name:"<<it->name<<endl;
+       cout<<"age:"<<it->age<<endl;//è¯´æ˜Žè¿­ä»£å™¨å¯ä»¥è§†ä¸ºæŒ‡é’ˆ
+      }
+}
+void test1(){
+    vector<Person *>v;
+     Person p1("zhangsan",10);
+    Person p2("lisi",20);
+    Person p3("wangwu",30);
+    Person p4("xiaoming",40);
+    Person p5("xiaobai",50);
+    v.push_back(&p1);
+    v.push_back(&p2);
+    v.push_back(&p3);
+    v.push_back(&p4);
+    v.push_back(&p5);
+    for(vector<Person *>::iterator it=v.begin();it!=v.end();it++){
+        cout<<"::name:"<<(*it)->name<<endl;
+        cout<<"::age:"<<(*it)->age<<endl;
+    }
+}
 int main(){
-	Vector a(3,6),b(6,9);
-	cout<<"Á½¸öÏòÁ¿µÄµã»ýÎª£º"<<doProduct(a,b)<<endl;
-	return 0;
-	
+    test();
+    test1();
+    return 0;
 }

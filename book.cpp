@@ -1,78 +1,38 @@
-/*
-4、设计一个图书信息类 Book，通过常量对象和常量引用实现对图书信息的安全访问和管理。要求：
-私有数据成员：title（书名）、author（作者）、isbn（ISBN号）
-构造函数：Book(string title, string author, string isbn)：初始化图书信息。
-常成员函数：string getTitle() const：返回书名。
-string getAuthor() const：返回作者。
-string getISBN() const：返回ISBN号。
-非常成员函数（可选）：
-void setTitle(string title)：设置书名。
-void setAuthor(string author)：设置作者。
-void setISBN(string isbn)：设置ISBN号。
-静态成员函数：
-void displayBook(const Book& book)：通过常量引用显示图书信息。
-编写主程序测试：
-创建一个常量对象 book1：
-调用常成员函数获取书名、作者和ISBN号。
-创建一个非常量对象 book2：
-调用常成员函数获取书名、作者和ISBN号。
-调用非常成员函数修改书名、作者和ISBN号。
-调用静态成员函数 displayBook，传递常量对象 book1和非常量对象 book2：
-     Book::displayBook(book1);
-     Book::displayBook(book2); */
+/*定义Book类，包含isbn（整型 int）、title（字符串string）、price（浮点数double）成员变量，提供有参构造函数和无参构造函数初始化成员变量,成员函数void display()用于输出书本信息。
+在主程序中创建Book对象book1，调用有参构造函数初始化，创建文件输出流对象outfile执行二进制文件的写入操作,将对象book1中的初始化信息写入二进制文件book.dat
+创建Book对象book2，调用无参构造函数初始化，创建文件输入流对象infile执行二进制文件的读取操作，将读取信息储存到对象book2上，调用display（）函数验证数据完整性。
+*/
 #include<iostream>
 #include<string>
+#include<fstream>
 using namespace std;
 class Book{
-	private:
-		string title;
-		string author;
-		string isbn;
 	public:
-		Book(string t,string a,string i):title(t),author(a),isbn(i){}
-		string getTitle()const{
-			return title;
+		int isbn;
+		string  title;
+		double price;
+		Book(int i,string t,double p):isbn(i),title(t),price(p){}
+		Book(){}
+		void display(){
+			cout<<"isbn:"<<isbn<<endl;
+			cout<<"title:"<<title<<endl;
+			cout<<"price:"<<price<<endl;
+			
 		}
-		string getAuthor()const{
-			return author;
-		}
-		string getISBN()const{
-			return isbn;
-		}
-		static void displayBook(const Book&book){
-			cout<<"书名；"<<book.getTitle()<<endl;
-			cout<<"作者："<<book.getAuthor()<<endl;
-			cout<<"ISBN号："<<book.getISBN()<<endl;
-				};
-		
-void setTitle(string t){
-	title=t;
-};
-void setAuthor(string a){
-	author=a;
-};
-void setISBN(string i){
-	isbn=i;
-};
 };
 int main(){
- const 	Book book1("红楼梦","曹雪芹","9787");
-	cout<<"书名:"<<book1.getTitle()<<endl;
-	cout<<"作者名："<<book1.getAuthor()<<endl;
-	cout<<"ISBN号"<<book1.getISBN()<<endl;
-	Book book2("西游记","吴承恩","2376");
-	cout<<"书名："<<book2.getTitle()<<endl;
-	cout<<"作者名："<<book2.getAuthor()<<endl;
-	cout<<"ISBN号："<<book2.getISBN()<<endl;
-	book2.setTitle("三国演义");
-	book2.setAuthor("罗贯中");
-	book2.setISBN("2457");
-	Book::displayBook(book1);
-	Book::displayBook(book2);
+	Book book1(17843,"红楼梦",56);
+	ofstream outfile("book.dat",ios::out|ios::binary);
+	if(outfile){
+		cout<<"文件已打开"<<endl;
+	}else{
+		cout<<"文件未打开"<<endl;
+	}
+	outfile.write((char*)&book1,sizeof(book1));
+	outfile.close();
+	Book book2;
+	ifstream infile("book.dat",ios::in);
+	infile.read((char*)&book2,sizeof(book2));
+	book2.display();
 	return 0;
-	
-	
-	
-}
-
-
+	}
